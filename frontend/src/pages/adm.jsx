@@ -49,13 +49,15 @@ export default function PaginaAdm() {
                 </tbody>
             </table>
 
-            <Link to={"/inicio"}>
+            
                 <div className="botao">
+                    <Link to={"/inicio"}>
                     <button>
                         ir para início
                     </button>
+                    </Link>
                 </div>
-            </Link>
+            
 
 
         </div>

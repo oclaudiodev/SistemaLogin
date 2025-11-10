@@ -1,6 +1,22 @@
+import { useNavigate } from 'react-router';
 import './inicio.scss'
 
+
+
 export default function Inicio() {
+
+    const navegar = useNavigate();
+
+    async function uSair() {
+        try {
+            localStorage.removeItem('token');
+            alert('Você saiu da conta.');
+            navegar('/');
+        } catch (err) {
+            alert('Erro ao sair: ' + err.message);
+        }
+    }
+
     return (
         <div className="inicio">
             <section className="apresentacao">
@@ -8,7 +24,7 @@ export default function Inicio() {
                     <h1> Olá, eu sou <span>Cláudio</span></h1>
                     <h2>Desenvolvedor Full Stack</h2>
                     <p>
-                        Transformo ideias em soluções completas. Desenvolvo aplicações do front ao back-end, unindo design intuitivo e arquitetura robusta. Utilizo tecnologias como <strong>React</strong>, <strong>Node.js Express</strong>, <strong>MySQL </strong> e <strong>SCSS</strong>, sempre com foco em performance, escalabilidade e experiência do usuário. 
+                        Transformo ideias em soluções completas. Desenvolvo aplicações do front ao back-end, unindo design intuitivo e arquitetura robusta. Utilizo tecnologias como <strong>React</strong>, <strong>Node.js Express</strong>, <strong>MySQL </strong> e <strong>SCSS</strong>, sempre com foco em performance, escalabilidade e experiência do usuário.
                     </p>
 
                     <div className="botoes">
@@ -26,7 +42,7 @@ export default function Inicio() {
                             rel="noopener noreferrer"
                             className="btn btn-secundario"
                         >
-                             Contato
+                            Contato
                         </a>
                     </div>
                 </div>
@@ -66,6 +82,9 @@ export default function Inicio() {
                     Enviar E-mail
                 </a>
             </section>
+            <div className='botao-sair'>
+                <button onClick={uSair}>sair</button>
+            </div>
         </div>
     )
 }

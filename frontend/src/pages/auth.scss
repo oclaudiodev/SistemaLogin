@@ -2,7 +2,7 @@ body{
   background-image: url('src/assets/images/background.jpg');
   background-repeat: no-repeat;
   background-size: cover;
-  height: 100%;
+  height: 100vh;
 }
 
 .auth-container {
@@ -143,12 +143,25 @@ body{
 }
 
 @media (max-width: 760px) {
+
+  body{
+     background-image: url('src/assets/images/background.jpg');
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100%;
+  }
   .auth-container {
     flex-direction: column;
     height: auto;
+    
   }
 
-  .forms-area, .painel-animado {
+  .forms-area {
+    width: 90%;
+    height: auto;
+    transform: none !important;
+  }
+  .painel-animado{
     width: 100%;
     height: auto;
     transform: none !important;
