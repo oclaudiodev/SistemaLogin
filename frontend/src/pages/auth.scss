@@ -1,8 +1,13 @@
 body{
   background-image: url('src/assets/images/background.jpg');
   background-repeat: no-repeat;
-  background-size: cover;
-  height: 100%;
+  background-size: cover;        /* cobre toda a tela */
+  background-position: center;   /* centraliza a imagem */
+  background-attachment: fixed;  /* mantém o fundo fixo ao rolar */
+  min-height: 100vh;             /* garante altura mínima de viewport */
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 .auth-container {
@@ -142,14 +147,24 @@ body{
   }
 }
 
-@media (max-width: 760px) {
-
-  body{
-     background-image: url('src/assets/images/background.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  height: 100%;
+@media (max-width: 1024px) {
+  body {
+    background-image: url('src/assets/images/background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
   }
+}
+
+@media (max-width: 760px) {
+  body {
+    background-image: url('src/assets/images/background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    height: 100%;
+  }
+
+
   .auth-container {
     flex-direction: column;
     height: auto;

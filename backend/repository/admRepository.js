@@ -9,3 +9,14 @@ export async function ContarUsuarios() {
     const [registros] = await conection.query(comando)
     return registros[0].total_usuarios;
 }
+
+
+  export async function listarUsuarios() {
+    const comando = `
+      select nome, email
+      from usuario
+      order by id_user;
+    `;
+    const [linhas] = await conection.query(comando);
+    return linhas;
+  }

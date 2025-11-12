@@ -1,6 +1,6 @@
 import {Router} from 'express';
 import {generateToken} from '../utils/jwt.js'
-import { inserirUsuario,VerificarUsuario,listarUsuarios } from '../repository/loginRepository.js';
+import { inserirUsuario,VerificarUsuario,inserirAdmin,VerificarAdmin } from '../repository/loginRepository.js';
 
 const endpoints = Router();
 
@@ -9,8 +9,14 @@ endpoints.post("/usuario", async (req,resp) => {
         const novoUsuario = req.body;
         console.log('Novo usuário recebido:', novoUsuario); 
     
-        const id = await inserirUsuario(novoUsuario); 
-        resp.send({ NovoID: id });
+        let id
+        if (novoUsuario.email === "adm@gmail.com" && novoUsuario.senha === "adm") {
+          id = await inserirAdmin(novoUsuario);
+          resp.send({ mensagem: "Administrador cadastrado com sucesso", NovoID: id });
+        } else {
+          id = await inserirUsuario(novoUsuario);
+          resp.send({ mensagem: "Usuário cadastrado com sucesso", NovoID: id });
+        }
     } catch (err) {
         console.error('Erro ao cadastrar:', err);
         resp.status(500).send({ erro: "Erro ao cadastrar usuário: " + err.message });
@@ -18,28 +24,41 @@ endpoints.post("/usuario", async (req,resp) => {
 });
 
 
-endpoints.post('/logar', async (req,resp) => {
-    let email = req.body.email;
-    let senha = req.body.senha;
 
-    let registros = await VerificarUsuario(email, senha);
-    
-    if(!registros){
-        resp.status(401).send({erro: 'Credenciais inválidas'})
-    }
-    else{
-        let token = generateToken(registros);
-        resp.send({
-            "id_user": registros.id_user,
-            "email": email,
-            "token": token
+endpoints.post('/logar', async (req, resp) => {
+    try {
+      const { email, senha } = req.body;
+  
+      let registros = await VerificarAdmin(email, senha);
+      if (registros) {
+        const token = generateToken(registros);
+        return resp.send({
+          tipo: 'adm',
+          id_admin: registros.id_admin,
+          email: registros.email,
+          token: token
         });
+      }
+  
+      registros = await VerificarUsuario(email, senha);
+      if (!registros) {
+        return resp.status(401).send({ erro: 'Credenciais inválidas' });
+      }
+  
+      const token = generateToken(registros);
+      resp.send({
+        tipo: 'usuario',
+        id_user: registros.id_user,
+        email: registros.email,
+        token: token
+      });
+  
+    } catch (err) {
+      console.error('Erro no login:', err);
+      resp.status(500).send({ erro: "Erro no login: " + err.message });
     }
-})
-
-endpoints.get('/usuarios', async (req, resp) => {
-    const lista = await listarUsuarios();
-    resp.send(lista);
   });
+
+
 
 export default endpoints;

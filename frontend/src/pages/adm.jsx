@@ -5,6 +5,7 @@ import { Link } from 'react-router';
 
 export default function PaginaAdm() {
     const [usuarios, setUsuarios] = useState([]);
+    const [totalUser,setTotaluser] = useState([])
 
     async function carregarUsuarios() {
         try {
@@ -15,9 +16,21 @@ export default function PaginaAdm() {
         }
     }
 
+    async function CarregarQuantidade(){
+        try{
+            const resp = await api.get("/totalusuarios");
+            setTotaluser(resp.data)
+        }
+        catch(err){
+        alert("Erro ao carregar quantidade de usuários: " + (err.response?.data?.erro || err.message));
+        }
+    }
+
     useEffect(() => {
-        carregarUsuarios();
+        carregarUsuarios(),CarregarQuantidade();
     }, []);
+
+    
 
     return (
         <div className="PaginaAdm">
@@ -57,9 +70,10 @@ export default function PaginaAdm() {
                     </button>
                     </Link>
                 </div>
-            
-
-
+                <h1>Quantidade de usuários cadastrados no Site:</h1>
+                  <div className="contador">
+                    <h2>{totalUser}</h2>
+                  </div>
         </div>
     );
 }

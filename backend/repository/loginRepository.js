@@ -29,14 +29,23 @@ export async function VerificarUsuario(email, senha) {
     return registros[0];
 }
 
-export async function listarUsuarios() {
+  
+export async function inserirAdmin(admin) {
     const comando = `
-      select nome, email
-      from usuario
-    where id_user > 1
-      order by id_user;
+      INSERT INTO adm (nome, email, senha)
+      VALUES (?, ?, MD5(?))
     `;
-    const [linhas] = await conection.query(comando);
-    return linhas;
+    const [resposta] = await conection.query(comando, [admin.nome, admin.email, admin.senha]);
+    return resposta.insertId;
   }
   
+
+  export async function VerificarAdmin(email, senha) {
+    const comando = `
+      SELECT id_adm, nome, email
+      FROM adm
+      WHERE email = ? AND senha = MD5(?)
+    `;
+    const [linhas] = await conection.query(comando, [email, senha]);
+    return linhas[0];
+  }

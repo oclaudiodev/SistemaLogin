@@ -28,7 +28,7 @@ export default function AuthContainer() {
       localStorage.setItem('token', response.data.token);
       alert('Login bem-sucedido!');
 
-      if (dados.email === 'adm@gmail.com' && dados.senha === 'adm') {
+      if (response.data.tipo === 'adm') {
         navigate('/adm');
       } else {
         navigate('/inicio');
